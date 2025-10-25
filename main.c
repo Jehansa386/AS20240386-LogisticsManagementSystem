@@ -49,6 +49,23 @@ typedef struct {
     float time;
 } Delivery;
 
+// Calculations
+void calculateDeliveryCost(Delivery *d) {
+    float D = d->distance;
+    float W = d->weight;
+    float R = d->vehicle.rate;
+    float S = d->vehicle.speed;
+    float E = d->vehicle.efficiency;
+
+// Formulas
+    d->deliveryCost = D * R * (1 + (W / 10000.0));
+    d->fuelUsed = D / E;
+    d->fuelCost = d->fuelUsed * FUEL_PRICE;
+    d->totalOperationalCost = d->deliveryCost + d->fuelCost;
+    d->profit = d->deliveryCost * 0.25;
+    d->customerCharge = d->totalOperationalCost + d->profit;
+    d->time = D / S;
+}
 
 
 // Add a new city
