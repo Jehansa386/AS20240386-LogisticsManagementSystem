@@ -6,6 +6,7 @@
 #define MAX_NAME_LEN 50
 
 char cities[MAX_CITIES][MAX_NAME_LEN];
+int distanceMatrix[MAX_CITIES][MAX_CITIES];
 int city_count = 0;
 
 // Add a new city
@@ -131,6 +132,63 @@ void cityMenu() {
     } while (choice != 0);
 }
 
+// Distance management
+void inputDistance() {
+    if (city_count < 2) {
+        printf("At least two cities are needed to set distances.\n");
+        return;
+    }
+
+    printf("\n--- City List ---\n");
+    for (int i = 0; i < city_count; i++) {
+        printf("%d. %s\n", i + 1, cities[i]);
+    }
+
+    int c1, c2, dist;
+    printf("Enter first city number: ");
+    scanf("%d", &c1);
+    printf("Enter second city number: ");
+    scanf("%d", &c2);
+
+    if (c1 < 1 || c2 < 1 || c1 > city_count || c2 > city_count || c1 == c2) {
+        printf("Invalid city numbers.\n");
+        return;
+    }
+
+    printf("Enter distance between %s and %s (in km): ", cities[c1 - 1], cities[c2 - 1]);
+    scanf("%d", &dist);
+
+    if (dist <= 0) {
+        printf("Distance must be positive.\n");
+        return;
+    }
+
+    distanceMatrix[c1 - 1][c2 - 1] = dist;
+    distanceMatrix[c2 - 1][c1 - 1] = dist;
+    printf("Distance updated successfully.\n");
+}
+
+//Display distance table
+void displayDistanceTable() {
+    if (city_count == 0) {
+        printf("No cities to display distances.\n");
+        return;
+    }
+
+    printf("\n%-15s", "City");
+    for (int i = 0; i < city_count; i++) {
+        printf("%-15s", cities[i]);
+    }
+    printf("\n");
+
+    for (int i = 0; i < city_count; i++) {
+        printf("%-15s", cities[i]);
+        for (int j = 0; j < city_count; j++) {
+            printf("%-15d", distanceMatrix[i][j]);
+        }
+        printf("\n");
+    }
+}
 
 
 
