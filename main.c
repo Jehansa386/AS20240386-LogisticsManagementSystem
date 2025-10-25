@@ -106,10 +106,7 @@ void removeCity() {
     printf("City removed successfully.\n");
 }
 
-
-
-int main()
-{
+void cityMenu() {
     int choice;
     do {
         printf("\n----- CITY MANAGEMENT -----\n");
@@ -132,7 +129,39 @@ int main()
             default:printf("Invalid choice.\n");
         }
     } while (choice != 0);
+}
 
+
+
+
+int main()
+{
+    int main() {
+    int mainChoice;
+
+    do {
+        printf("\n------ LOGISTICS MANAGEMENT SYSTEM ------\n");
+        printf("1. City Management\n");
+        printf("2. Distance Management\n");
+        printf("0. Exit\n");
+        printf("\n---------------------------------------------\n");
+        printf("Enter your choice: ");
+        scanf("%d", &mainChoice);
+
+        switch (mainChoice) {
+            case 1: cityMenu();
+                break;
+            case 2: distanceMenu();
+                break;
+            case 0: printf("Exiting program...\n");
+                break;
+            default: printf("Invalid choice.\n");
+        }
+
+    } while (mainChoice != 0);
+
+    return 0;
+}
 
     return 0;
 }
