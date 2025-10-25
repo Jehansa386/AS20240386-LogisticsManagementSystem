@@ -5,10 +5,15 @@
 #define MAX_CITIES 30
 #define MAX_NAME_LEN 50
 #define MAX_VEHICLES 3
+#define MAX_DELIVERIES 50
+#define FUEL_PRICE 310.0 // LKR per liter
 
 char cities[MAX_CITIES][MAX_NAME_LEN];
 int distanceMatrix[MAX_CITIES][MAX_CITIES];
 int city_count = 0;
+Delivery deliveries[MAX_DELIVERIES];
+int deliveryCount = 0;
+
 
 
 //Vehicle data
@@ -26,6 +31,24 @@ Vehicle vehicles[MAX_VEHICLES] = {
     {"Truck", 5000, 40, 50, 6},
     {"Lorry", 10000, 80, 45, 4}
 };
+
+// Delivery data
+
+typedef struct {
+    char source[MAX_NAME_LEN];
+    char destination[MAX_NAME_LEN];
+    float distance;
+    float weight;
+    Vehicle vehicle;
+    float deliveryCost;
+    float fuelUsed;
+    float fuelCost;
+    float totalOperationalCost;
+    float profit;
+    float customerCharge;
+    float time;
+} Delivery;
+
 
 
 // Add a new city
