@@ -433,6 +433,74 @@ void deliveryMenu() {
     } while (choice != 0);
 }
 
+// Reports
+void generateReports() {
+    if (deliveryCount == 0) {
+        printf("No deliveries to report.\n");
+        return;
+    }
+
+    float totalDistance = 0, totalTime = 0, totalRevenue = 0, totalProfit = 0;
+    float longestRoute = 0, shortestRoute = deliveries[0].distance;
+    int longestIndex = 0, shortestIndex = 0;
+
+    for (int i = 0; i < deliveryCount; i++) {
+        totalDistance += deliveries[i].distance;
+        totalTime += deliveries[i].time;
+        totalRevenue += deliveries[i].customerCharge;
+        totalProfit += deliveries[i].profit;
+
+        if (deliveries[i].distance > longestRoute) {
+            longestRoute = deliveries[i].distance;
+            longestIndex = i;
+        }
+        if (deliveries[i].distance < shortestRoute) {
+            shortestRoute = deliveries[i].distance;
+            shortestIndex = i;
+        }
+    }
+
+    float avgTime = totalTime / deliveryCount;
+
+    printf("\n==============================\n");
+    printf("        PERFORMANCE REPORT     \n");
+    printf("==============================\n");
+    printf("Total Deliveries Completed : %d\n", deliveryCount);
+    printf("Total Distance Covered     : %.2f km\n", totalDistance);
+    printf("Average Delivery Time      : %.2f hours\n", avgTime);
+    printf("Total Revenue (LKR)        : %.2f\n", totalRevenue);
+    printf("Total Profit (LKR)         : %.2f\n", totalProfit);
+    printf("------------------------------\n");
+    printf("Longest Route: %s → %s (%.2f km)\n",
+           deliveries[longestIndex].source,
+           deliveries[longestIndex].destination,
+           deliveries[longestIndex].distance);
+    printf("Shortest Route: %s → %s (%.2f km)\n",
+           deliveries[shortestIndex].source,
+           deliveries[shortestIndex].destination,
+           deliveries[shortestIndex].distance);
+    printf("==============================\n");
+}
+
+void reportsMenu() {
+    int choice;
+    do {
+        printf("\n----- REPORTS MENU -----\n");
+        printf("1. Generate Performance Report\n");
+        printf("0. Back to Main Menu\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: generateReports();
+                break;
+            case 0: printf("Returning to main menu...\n");
+                break;
+            default: printf("Invalid choice.\n");
+        }
+    } while (choice != 0);
+}
+
 
 
 int main()
@@ -444,6 +512,8 @@ int main()
         printf("1. City Management\n");
         printf("2. Distance Management\n");
         printf("3. Vehicle Management\n");
+        printf("4. Delivery Management\n");
+        printf("5. Reports\n");
         printf("0. Exit\n");
         printf("\n-----------------------------------------\n");
         printf("Enter your choice: ");
@@ -455,6 +525,10 @@ int main()
             case 2: distanceMenu();
                 break;
             case 3: vehicleMenu();
+                break;
+            case 4: deliveryMenu();
+                break;
+            case 5: reportsMenu();
                 break;
             case 0: printf("Exiting program...\n");
                 break;
