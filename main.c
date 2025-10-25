@@ -392,6 +392,46 @@ void addDelivery() {
     printf("------------------------------\n");
 }
 
+void viewDeliveries() {
+    if (deliveryCount == 0) {
+        printf("No deliveries recorded yet.\n");
+        return;
+    }
+
+    printf("\n----- ALL DELIVERIES -----\n");
+    for (int i = 0; i < deliveryCount; i++) {
+        printf("%d. %s -> %s | %.2f km | %.2f kg | %s | Charge: %.2f LKR\n",
+               i + 1,
+               deliveries[i].source,
+               deliveries[i].destination,
+               deliveries[i].distance,
+               deliveries[i].weight,
+               deliveries[i].vehicle.type,
+               deliveries[i].customerCharge);
+    }
+}
+
+void deliveryMenu() {
+    int choice;
+    do {
+        printf("\n----- DELIVERY MANAGEMENT -----\n");
+        printf("1. Create New Delivery\n");
+        printf("2. View All Deliveries\n");
+        printf("0. Back to Main Menu\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: addDelivery();
+                break;
+            case 2: viewDeliveries();
+                break;
+            case 0: printf("Returning to main menu...\n");
+                break;
+            default: printf("Invalid choice.\n");
+        }
+    } while (choice != 0);
+}
 
 
 
