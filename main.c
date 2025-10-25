@@ -220,13 +220,54 @@ void distanceMenu() {
         scanf("%d", &choice);
 
         switch (choice) {
-            case 1: inputDistance(); break;
-            case 2: displayDistanceTable(); break;
-            case 0: printf("Returning to main menu...\n"); break;
+            case 1: inputDistance();
+                break;
+            case 2: displayDistanceTable();
+                break;
+            case 0: printf("Returning to main menu...\n");
+                break;
             default: printf("Invalid choice.\n");
         }
     } while (choice != 0);
 }
+
+// Vehicle management
+
+void displayVehicles() {
+    printf("\n%-10s %-12s %-12s %-12s %-12s\n",
+           "Type", "Capacity(kg)", "Rate/km", "Speed(km/h)", "Efficiency(km/l)");
+    printf("------------------------------------------------------------------\n");
+
+    for (int i = 0; i < MAX_VEHICLES; i++) {
+        printf("%-10s %-12d %-12.2f %-12.2f %-12.2f\n",
+               vehicles[i].type,
+               vehicles[i].capacity,
+               vehicles[i].rate,
+               vehicles[i].speed,
+               vehicles[i].efficiency);
+    }
+}
+
+void vehicleMenu() {
+    int choice;
+    do {
+        printf("\n----- VEHICLE MANAGEMENT -----\n");
+        printf("1.Display Vehicle Details\n");
+        printf("0.Back to Main Menu\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: displayVehicles();
+                break;
+            case 0: printf("Return to main menu...\n");
+                break;
+            default: printf("Invalid choice.\n");
+        }
+    } while (choice != 0);
+}
+
+
 
 
 
