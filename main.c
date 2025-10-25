@@ -280,6 +280,7 @@ int main()
         printf("\n------ LOGISTICS MANAGEMENT SYSTEM ------\n");
         printf("1. City Management\n");
         printf("2. Distance Management\n");
+        printf("3. Vehicle Management\n");
         printf("0. Exit\n");
         printf("\n---------------------------------------------\n");
         printf("Enter your choice: ");
@@ -289,6 +290,8 @@ int main()
             case 1: cityMenu();
                 break;
             case 2: distanceMenu();
+                break;
+            case 3: vehicleMenu();
                 break;
             case 0: printf("Exiting program...\n");
                 break;
