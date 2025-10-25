@@ -190,6 +190,25 @@ void displayDistanceTable() {
     }
 }
 
+void distanceMenu() {
+    int choice;
+    do {
+        printf("\n----- DISTANCE MANAGEMENT -----\n");
+        printf("1. Input/Edit Distance\n");
+        printf("2. Display Distance Table\n");
+        printf("0. Back to Main Menu\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: inputDistance(); break;
+            case 2: displayDistanceTable(); break;
+            case 0: printf("Returning to main menu...\n"); break;
+            default: printf("Invalid choice.\n");
+        }
+    } while (choice != 0);
+}
+
 
 
 int main()
