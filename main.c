@@ -7,7 +7,7 @@
 #define MAX_VEHICLES 3
 #define MAX_DELIVERIES 50
 #define FUEL_PRICE 310.0 // LKR per liter
-
+#define INF 999999
 
 
 //Vehicle data
@@ -500,6 +500,101 @@ void reportsMenu() {
         }
     } while (choice != 0);
 }
+float calculateRouteDistance(int route[], int routeLength) {
+    float total = 0;
+
+    for (int i = 0; i < routeLength - 1; i++) {
+        int from = route[i];
+        int to = route[i + 1];
+        if (distanceMatrix[from][to] == 0) {
+            return INF;
+        }
+        total += distanceMatrix[from][to];
+    }
+
+    return total;
+}
+void findLeastCostRoute() {
+    if (city_count < 2) {
+        printf("At least two cities are needed.\n");
+        return;
+    }
+
+    printf("\n--- City List ---\n");
+    for (int i = 0; i < city_count; i++) {
+        printf("%d. %s\n", i + 1, cities[i]);
+    }
+
+    int src, dest;
+    printf("Enter source city number: ");
+    scanf("%d", &src);
+    printf("Enter destination city number: ");
+    scanf("%d", &dest);
+
+    if (src < 1 || dest < 1 || src > city_count || dest > city_count || src == dest) {
+        printf("Invalid city numbers.\n");
+        return;
+    }
+
+// Basic direct distance
+    float directDistance = distanceMatrix[src - 1][dest - 1];
+    float bestDistance = directDistance > 0 ? directDistance : INF;
+
+    int bestRoute[5];
+    int route[5];
+
+// Try all 1, 2, and 3 intermediate city routes
+    for (int i = 0; i < city_count; i++) {
+        if (i == src - 1 || i == dest - 1) continue;
+
+// Route: src → i → dest
+        int route2[] = {src - 1, i, dest - 1};
+        float dist2 = calculateRouteDistance(route2, 3);
+        if (dist2 < bestDistance) {
+            bestDistance = dist2;
+            memcpy(bestRoute, route2, sizeof(route2));
+        }
+
+// Try 2 intermediate cities: src → i → j → dest
+        for (int j = 0; j < city_count; j++) {
+            if (j == src - 1 || j == dest - 1 || j == i) continue;
+            int route3[] = {src - 1, i, j, dest - 1};
+            float dist3 = calculateRouteDistance(route3, 4);
+            if (dist3 < bestDistance) {
+                bestDistance = dist3;
+                memcpy(bestRoute, route3, sizeof(route3));
+            }
+        }
+    }
+
+    if (bestDistance == INF) {
+        printf("No possible route found between %s and %s.\n",
+               cities[src - 1], cities[dest - 1]);
+        return;
+    }
+
+// Display result
+    printf("\n==============================\n");
+    printf("LEAST-COST ROUTE SEARCH\n");
+    printf("------------------------------\n");
+    printf("From: %s\n", cities[src - 1]);
+    printf("To: %s\n", cities[dest - 1]);
+    printf("Minimum Distance: %.2f km\n", bestDistance);
+    printf("Best Route: ");
+
+    for (int k = 0; k < 4; k++) {
+        if (bestRoute[k] == dest - 1) {
+            printf("%s", cities[bestRoute[k]]);
+            break;
+        }
+        if (bestRoute[k] < city_count)
+            printf("%s -> ", cities[bestRoute[k]]);
+    }
+
+    printf("\n==============================\n");
+}
+
+
 
 
 
