@@ -612,12 +612,109 @@ void leastCostMenu() {
     } while (choice != 0);
 }
 
+// File handling function
+
+void saveRoutesToFile() {
+    FILE *fp = fopen("routes.txt", "w");
+    if (!fp) {
+        printf("Error saving routes file.\n");
+        return;
+    }
+
+    fprintf(fp, "%d\n", city_count);
+    for (int i = 0; i < city_count; i++) {
+        fprintf(fp, "%s\n", cities[i]);
+    }
+
+    for (int i = 0; i < city_count; i++) {
+        for (int j = 0; j < city_count; j++) {
+            fprintf(fp, "%d ", distanceMatrix[i][j]);
+        }
+        fprintf(fp, "\n");
+    }
+
+    fclose(fp);
+    printf("Routes saved successfully.\n");
+}
+
+// Load city list and distance matrix
+void loadRoutesFromFile() {
+    FILE *fp = fopen("routes.txt", "r");
+    if (!fp) return;
+
+    fscanf(fp, "%d\n", &city_count);
+    for (int i = 0; i < city_count; i++) {
+        fgets(cities[i], MAX_NAME_LEN, fp);
+        cities[i][strcspn(cities[i], "\n")] = '\0';
+    }
+
+    for (int i = 0; i < city_count; i++) {
+        for (int j = 0; j < city_count; j++) {
+            fscanf(fp, "%d", &distanceMatrix[i][j]);
+        }
+    }
+
+    fclose(fp);
+    printf("Routes loaded successfully.\n");
+}
+
+// Save deliveries
+void saveDeliveriesToFile() {
+    FILE *fp = fopen("deliveries.txt", "w");
+    if (!fp) {
+        printf("Error saving deliveries file.\n");
+        return;
+    }
+
+    fprintf(fp, "%d\n", deliveryCount);
+    for (int i = 0; i < deliveryCount; i++) {
+        Delivery d = deliveries[i];
+        fprintf(fp, "%s,%s,%.2f,%.2f,%s,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n",
+                d.source, d.destination, d.distance, d.weight, d.vehicle.type,
+                d.deliveryCost, d.fuelUsed, d.fuelCost, d.totalOperationalCost,
+                d.profit, d.customerCharge, d.time);
+    }
+
+    fclose(fp);
+    printf("Deliveries saved successfully.\n");
+}
+
+// Load deliveries
+void loadDeliveriesFromFile() {
+    FILE *fp = fopen("deliveries.txt", "r");
+    if (!fp) return;
+
+    fscanf(fp, "%d\n", &deliveryCount);
+    for (int i = 0; i < deliveryCount; i++) {
+        Delivery d;
+        fscanf(fp, "%[^,],%[^,],%f,%f,%[^,],%f,%f,%f,%f,%f,%f,%f\n",
+               d.source, d.destination, &d.distance, &d.weight, d.vehicle.type,
+               &d.deliveryCost, &d.fuelUsed, &d.fuelCost, &d.totalOperationalCost,
+               &d.profit, &d.customerCharge, &d.time);
+
+// Match vehicle details by type
+        for (int v = 0; v < MAX_VEHICLES; v++) {
+            if (strcmp(d.vehicle.type, vehicles[v].type) == 0) {
+                d.vehicle = vehicles[v];
+                break;
+            }
+        }
+
+        deliveries[i] = d;
+    }
+
+    fclose(fp);
+    printf("Deliveries loaded successfully.\n");
+}
 
 
 
 
 int main()
 {
+    loadRoutesFromFile();
+    loadDeliveriesFromFile();
+
     int mainChoice;
 
     do {
@@ -646,7 +743,9 @@ int main()
                 break;
             case 6: leastCostMenu();
                 break;
-            case 0: printf("Exiting program...\n");
+            case 0: printf("Saving data and exiting...\n");
+                saveRoutesToFile();
+                saveDeliveriesToFile();
                 break;
             default: printf("Invalid choice.\n");
         }
