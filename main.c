@@ -593,6 +593,24 @@ void findLeastCostRoute() {
 
     printf("\n==============================\n");
 }
+void leastCostMenu() {
+    int choice;
+    do {
+        printf("\n----- LEAST-COST ROUTE MENU -----\n");
+        printf("1. Find Least-Cost Route\n");
+        printf("0. Back to Main Menu\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: findLeastCostRoute();
+                break;
+            case 0: printf("Returning to main menu...\n");
+                break;
+            default: printf("Invalid choice.\n");
+        }
+    } while (choice != 0);
+}
 
 
 
@@ -609,6 +627,7 @@ int main()
         printf("3. Vehicle Management\n");
         printf("4. Delivery Management\n");
         printf("5. Reports\n");
+        printf("6. Least-Cost Route Finder\n");
         printf("0. Exit\n");
         printf("\n-----------------------------------------\n");
         printf("Enter your choice: ");
@@ -624,6 +643,8 @@ int main()
             case 4: deliveryMenu();
                 break;
             case 5: reportsMenu();
+                break;
+            case 6: leastCostMenu();
                 break;
             case 0: printf("Exiting program...\n");
                 break;
